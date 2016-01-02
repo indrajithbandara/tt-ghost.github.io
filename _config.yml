@@ -69,5 +69,5 @@ theme: landscape
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repository: https://github.com/tt-ghost/tt-ghost.github.io.git
+  repo: https://github.com/tt-ghost/tt-ghost.github.io.git
   branch: master
