@@ -1,4 +1,4 @@
 ---
-title: Hello TTGhost
+title: Hello TT
 ---
 Welcome!
