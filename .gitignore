@@ -7,3 +7,4 @@ public/
 .deploy*/
 .sass-cache
 .pygments-cache
+.tags_swap
