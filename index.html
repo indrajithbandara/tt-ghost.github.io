@@ -219,6 +219,248 @@
             
               
                 
+                <a class="post-title-link" href="/2016/10/31/JS正则表达式总结/" itemprop="url">
+                  JS正则表达式总结
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2016-10-31T01:17:12+08:00" content="2016-10-31">
+              2016-10-31
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/31/JS正则表达式总结/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/31/JS正则表达式总结/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <blockquote>
+<p>作为一名攻城狮，对正则表达式一定不会很陌生，但在平时开发中有时依然会遇到这样或那样的问题。本文从基础出发，本着让初学者入门，高手温故的初衷，相对系统性的介绍正了则相关知识。如有不准确的地方，欢迎吐槽</p>
+</blockquote>
+<p>原文地址：<a href="http://www.jianshu.com/p/59bc62880039">http://www.jianshu.com/p/59bc62880039</a></p>
+<p>本文仅介绍 <code>javascript</code> 语言中的正则，其他语言虽有不同，但很类似，感兴趣的自行google吧。另外本文针对所有示例都给了输出结果，希望读者思考为什么返回这样的结果，和自己期望的有什么不一样，建议自己也动手输入一下，加深记忆。</p>
+<p>本文总体分两部分：<strong>基础知识</strong> 和 <strong>案例分析</strong></p>
+<hr>
+<h2 id="u7B2C_u4E00_u90E8_u5206__u57FA_u7840_u77E5_u8BC6"><a href="#u7B2C_u4E00_u90E8_u5206__u57FA_u7840_u77E5_u8BC6" class="headerlink" title="第一部分 基础知识"></a>第一部分 基础知识</h2><hr>
+<h3 id="u4E00_u3001_u6B63_u5219_u7533_u660E_u65B9_u5F0F"><a href="#u4E00_u3001_u6B63_u5219_u7533_u660E_u65B9_u5F0F" class="headerlink" title="一、正则申明方式"></a>一、正则申明方式</h3><h4 id="1_u3001_u6784_u9020_u51FD_u6570_u65B9_u5F0F"><a href="#1_u3001_u6784_u9020_u51FD_u6570_u65B9_u5F0F" class="headerlink" title="1、构造函数方式"></a>1、构造函数方式</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> reg = <span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">'\d'</span>, <span class="string">'gi'</span>);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>通过 <code>new</code> 构造一个正则表达式对象，其中第一个参数 <code>&#39;\d&#39;</code> 是正则内容，第二个参数 <code>&#39;gi&#39;</code> 是修饰符。两个参数皆为字符串类型</li>
+<li>修饰符的作用是对匹配过程进行限定</li>
+<li>修饰符有三种：i, g, m，可以同时出现，没有顺序（即 <code>gi</code> 与 <code>ig</code> 一样），请参考下方说明</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>修饰符</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>i</td>
+<td>忽略大小写匹配</td>
+</tr>
+<tr>
+<td>g</td>
+<td>全局匹配，即是匹配一个后继续匹配，直到结束</td>
+</tr>
+<tr>
+<td>m</td>
+<td>多行匹配，即是遇到换行后不停止匹配，直到结束</td>
+</tr>
+</tbody>
+</table>
+<p><strong>说明：</strong></p>
+<ul>
+<li><code>[a-z]</code> 表示从小写字母a到小写字母z之间的任意字符(含a和z)，下文会有详细说明</li>
+<li><code>+</code> 表示至少出现一次</li>
+<li><code>\n</code> 在js中表示换行</li>
+<li><code>^[a-z]</code> 表示以任意小写字母开头的行</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'aBcd efg'</span>.match(<span class="regexp">/[a-z]+/</span>);</span><br><span class="line"><span class="comment">// ["a"]</span></span><br><span class="line"></span><br><span class="line"><span class="string">'aBcd efg'</span>.match(<span class="regexp">/[a-z]+/i</span>);</span><br><span class="line"><span class="comment">// ["aBcd"]</span></span><br><span class="line"></span><br><span class="line"><span class="string">'aBcd efg'</span>.match(<span class="regexp">/[a-z]+/g</span>);</span><br><span class="line"><span class="comment">// ["a", "cd", "efg"]</span></span><br><span class="line"></span><br><span class="line"><span class="string">'aBcd efg'</span>.match(<span class="regexp">/[a-z]+/gi</span>);</span><br><span class="line"><span class="comment">// ["aBcd", "efg"]</span></span><br><span class="line"></span><br><span class="line"><span class="string">'aB\ncd\n efg'</span>.match(<span class="regexp">/^[a-z]+/m</span>);</span><br><span class="line"><span class="comment">// ["a"]</span></span><br><span class="line"></span><br><span class="line"><span class="string">'aB\ncd\n efg'</span>.match(<span class="regexp">/^[a-z]+/g</span>);</span><br><span class="line"><span class="comment">// ["a"]</span></span><br><span class="line"></span><br><span class="line"><span class="string">'aB\ncd\n efg'</span>.match(<span class="regexp">/^[a-z]+/gm</span>);</span><br><span class="line"><span class="comment">// ["a", "cd"]</span></span><br><span class="line"><span class="comment">// 注意不是 ["a", "cd", "efg"]</span></span><br></pre></td></tr></table></figure>
+<p>具体用法请看下文相关的示例</p>
+<h4 id="2_u3001_u5B57_u9762_u91CF_u65B9_u5F0F"><a href="#2_u3001_u5B57_u9762_u91CF_u65B9_u5F0F" class="headerlink" title="2、字面量方式"></a>2、字面量方式</h4><p>相比较上一种方式，这一种更为常见，上面示例也都使用了这种方式</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> reg = <span class="regexp">/\d/gi</span>;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>两个斜线内为正则的内容，后面可以跟修饰符，与第一种构造函数方式相比更简洁，缺点是正则内容不能拼接，对于大多数场景俩说足够了</p>
+</blockquote>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/10/31/JS正则表达式总结/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/07/14/css布局那点事/" itemprop="url">
+                  css布局那点事
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2016-07-14T13:47:10+08:00" content="2016-07-14">
+              2016-07-14
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/07/14/css布局那点事/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/14/css布局那点事/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>转载请注明出处： <strong><a href="http://tt-ghost.github.io/2016/07/14/css布局那点事">http://tt-ghost.github.io/2016/07/14/css布局那点事</a></strong><br><br></p>
+<blockquote>
+<p>说到布局，一定离不了自身的尺寸、文档流、相邻元素、父元素等。目的是让元素显示在应该出现的位置（好像是废话），然后其他地方最好也能复用，如果不同分辨率上体验一致就更好了</p>
+</blockquote>
+<p>针对上面这个目的，接下来我们就开始讲讲怎么让元素显示在应该在的位置，开始正题：</p>
+<h1 style='text-align:center'>理论部分</h1>
+
+<hr>
+<h2 id="u9700_u8981_u77E5_u9053_u7684_u57FA_u7840_u77E5_u8BC6"><a href="#u9700_u8981_u77E5_u9053_u7684_u57FA_u7840_u77E5_u8BC6" class="headerlink" title="需要知道的基础知识"></a>需要知道的基础知识</h2><p><strong>以下知识点需要有所了解</strong></p>
+<h3 id="u9ED8_u8BA4_u6837_u5F0F"><a href="#u9ED8_u8BA4_u6837_u5F0F" class="headerlink" title="默认样式"></a>默认样式</h3><p>浏览器对所有标签都有默认样式，比如文字默认是黑色，div默认是 <code>block</code>(块)元素，span默认是 <code>inline</code> (行内)元素等</p>
+<h3 id="u5C5E_u6027_u7EE7_u627F"><a href="#u5C5E_u6027_u7EE7_u627F" class="headerlink" title="属性继承"></a>属性继承</h3><p>有些属性可以继承，有些属性不能继承，如<code>color</code>可以继承，<code>width</code>就不能，具体哪些可以继承，哪些不能，一个简单方式记忆就是跟<strong>文字相关属性大都可以继承，跟布局相关属性大都继承</strong></p>
+<ul>
+<li><strong>常见的可继承属性</strong>：color,font(复合属性),letter-spacing,word-spacing…</li>
+<li><strong>不可继承属性</strong>：display、margin、border、padding、background、height、min-height、max-height、width、min-width、max-width、overflow、position、left、right、top、bottom、z-index、float、clear、table-layout、vertical-align…</li>
+</ul>
+<h3 id="u5355_u4E00_u5C5E_u6027_u4E0E_u590D_u5408_u5C5E_u6027"><a href="#u5355_u4E00_u5C5E_u6027_u4E0E_u590D_u5408_u5C5E_u6027" class="headerlink" title="单一属性与复合属性"></a>单一属性与复合属性</h3><p>属性分为单一属性和复合属性，单一属性如 <code>color:red</code> ，复合属性如（以下三中表示等价）:<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">padding</span>: 10<span class="tag">px</span> 20<span class="tag">px</span>;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">padding</span>: 10<span class="tag">px</span> 20<span class="tag">px</span> 10<span class="tag">px</span> 20<span class="tag">px</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">padding-top</span><span class="pseudo">:10px</span>;</span><br><span class="line"><span class="tag">padding-right</span><span class="pseudo">:20px</span>;</span><br><span class="line"><span class="tag">padding-bottom</span><span class="pseudo">:10px</span>;</span><br><span class="line"><span class="tag">padding-left</span><span class="pseudo">:20px</span>;</span><br></pre></td></tr></table></figure>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/07/14/css布局那点事/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/05/22/The-ABC-of-front-end/" itemprop="url">
                   前端零基础快速入门
                 </a>
@@ -384,7 +626,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">1</span>
+              <span class="site-state-item-count">3</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -398,7 +640,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">2</span>
+              <span class="site-state-item-count">7</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
