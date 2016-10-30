@@ -16,7 +16,7 @@ npm i hexo-deployer-git --save
 ## hexo 常用命令
 
 ```linux
-hexo new"postName" #新建文章
+hexo new "postName" #新建文章
 
 hexo new page"pageName" #新建页面
 
